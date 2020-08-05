@@ -4,6 +4,7 @@ import com.codecool.dungeoncrawl.logic.Cell;
 import com.codecool.dungeoncrawl.logic.CellType;
 import com.codecool.dungeoncrawl.logic.GameMap;
 import com.codecool.dungeoncrawl.logic.MapLoader;
+import com.codecool.dungeoncrawl.logic.actors.Skeleton;
 import com.codecool.dungeoncrawl.logic.dungeonitems.Key;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
@@ -68,50 +69,73 @@ public class Main extends Application {
 
 
     private void gameLoop() {
-        final float[] timeSum = {0};
         new AnimationTimer() {
+            final static float FPS = 5;
+            final float timePerTick = 1000000000 / FPS; // 1 sec = 1000000000 nanoSec
+            float delta = 0;
+            long now;
+            long lastTime = System.nanoTime();
+            long timer = 0;
+            int ticks = 0;
+
+
             @Override
             public void handle(long l) {
-                timeSum[0] = timeSum[0] + l;
-                if (timeSum[0] / 1000000000 > 100000) {
-                    render();
+                now = System.nanoTime();
+                delta += (now - lastTime) / timePerTick;
+                timer += now - lastTime;
+                lastTime = now;
+
+                if (delta >= 1) {
                     update();
-                    timeSum[0] = 0;
+                    ticks++;
+                    delta--;
                 }
-                // TODO: different time intervals for player movement
+                if (timer >= 1000000000) {
+                    System.out.println("Ticks per Frame: " + ticks);
+                    ticks = 0;
+                    timer = 0;
+                }
+                render();
             }
         }.start();
     }
 
 
     private void update() {
-//        map.getSkeletons().forEach(Skeleton::move);
-        map.getPlayer().pickUp();
-
-
+        // move skeletons
+        map.getSkeletons().forEach(Skeleton::move);
+        // check if key has been collected
         map.getPlayer().getInventory().forEach(dungeonItem -> {
             if (dungeonItem instanceof Key)
                 map.getDoor().setType(CellType.OPENDOOR);
         });
+        // UI
+        healthLabel.setText("" + map.getPlayer().getHealth());
+        inventoryLabel.setText(map.getPlayer().getStringInventory());
     }
 
 
     private void render() {
+        // clear canvas
         context.setFill(Color.BLACK);
         context.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
+        //draw map
         for (int x = 0; x < map.getWidth(); x++) {
             for (int y = 0; y < map.getHeight(); y++) {
                 Cell cell = map.getCell(x, y);
                 if (cell.getActor() != null) {
                     Tiles.drawTile(context, cell.getActor(), x, y);
-                } else if (cell.getDungeonItem() != null){
-                    Tiles.drawTile(context,cell.getDungeonItem(), x, y);
-                } else {
+                }
+                else if (cell.getDungeonItem() != null) {
+                    Tiles.drawTile(context, cell.getDungeonItem(), x, y);
+                }
+                else {
                     Tiles.drawTile(context, cell, x, y);
                 }
             }
+            // pick up items from floor
+            map.getPlayer().pickUp();
         }
-        healthLabel.setText("" + map.getPlayer().getHealth());
-        inventoryLabel.setText(map.getPlayer().getStringInventory());
     }
 }

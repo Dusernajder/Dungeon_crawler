@@ -22,6 +22,6 @@ public class Skeleton extends Actor {
     public void move() {
         int dx = Util.RANDOM.nextInt(3) - 1;
         int dy = Util.RANDOM.nextInt(3) - 1;
-        super.move(dx, dy);
+        super.moveIfPossible(dx, dy);
     }
 }
