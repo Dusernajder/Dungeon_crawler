@@ -70,9 +70,8 @@ public class Main extends Application {
 
     private void gameLoop() {
         new AnimationTimer() {
-            final float[] timeSum = {0};
             final static float FPS = 5;
-            final float timePerTick = 1000000000 / FPS;
+            final float timePerTick = 1000000000 / FPS; // 1 sec = 1000000000 nanoSec
             float delta = 0;
             long now;
             long lastTime = System.nanoTime();
@@ -93,7 +92,7 @@ public class Main extends Application {
                     delta--;
                 }
                 if (timer >= 1000000000) {
-                    System.out.println("Ticks per Frame: " + ticks); // Prints Fps
+                    System.out.println("Ticks per Frame: " + ticks);
                     ticks = 0;
                     timer = 0;
                 }
