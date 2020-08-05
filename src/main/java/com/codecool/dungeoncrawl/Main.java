@@ -71,18 +71,27 @@ public class Main extends Application {
     private void gameLoop() {
         new AnimationTimer() {
             final static float FPS = 5;
-            final float timePerTick = 1000000000 / FPS; // 1 sec = 1000000000 nanoSec
+            // times to run update method
+            final float timePerTick = 1e9f / FPS; // 1 sec = 1000000000 (1 billion) nanoSec
+
+            // elapsed time
             float delta = 0;
             long now;
             long lastTime = System.nanoTime();
+
+            // observation purposes
             long timer = 0;
             int ticks = 0;
 
 
             @Override
             public void handle(long l) {
-                now = System.nanoTime();
+                now = System.nanoTime(); // current time
+
+                // increment by elapsed time, divide times needed to tick/s
                 delta += (now - lastTime) / timePerTick;
+
+                // observation purposes
                 timer += now - lastTime;
                 lastTime = now;
 
@@ -91,7 +100,8 @@ public class Main extends Application {
                     ticks++;
                     delta--;
                 }
-                if (timer >= 1000000000) {
+                // prints how many time update has been called
+                if (timer >= 1e9) {
                     System.out.println("Ticks per Frame: " + ticks);
                     ticks = 0;
                     timer = 0;
@@ -99,6 +109,14 @@ public class Main extends Application {
                 render();
             }
         }.start();
+
+        // safety net
+        try {
+            stop();
+        }
+        catch (Exception e) {
+            System.err.println("Program can NOT be stopped!");
+        }
     }
 
 
