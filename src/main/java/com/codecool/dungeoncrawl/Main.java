@@ -126,12 +126,17 @@ public class Main extends Application {
         Player player = map.getPlayer();
         String[] maps = {"/map.txt", "/map2.txt", "/map3.txt"};
         int currentLevel = map.getPlayer().getLevel();
+        // if player enter open door
         if (map.getDoor() == map.getPlayer().getCell()) {
-
             ArrayList<DungeonItem> inventory = map.getPlayer().getInventory();
+            // level up
             map.getPlayer().levelUp();
+            // Set new map
             getMapByLevel(maps, currentLevel, player);
+            // Set inventory
             map.getPlayer().setInventory(inventory);
+            // Remove key from inventory
+            removeKey(map.getPlayer().getInventory());
         }
 
 
@@ -146,6 +151,10 @@ public class Main extends Application {
         // UI
         healthLabel.setText("" + map.getPlayer().getHealth());
         inventoryLabel.setText(map.getPlayer().getStringInventory());
+    }
+
+    private void removeKey(ArrayList<DungeonItem> inventory) {
+        inventory.removeIf(dungeonItem -> dungeonItem.getTileName().equals("key"));
     }
 
     private void getMapByLevel(String[] maps, int currentLevel, Player player) {
