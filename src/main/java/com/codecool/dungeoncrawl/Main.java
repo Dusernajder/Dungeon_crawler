@@ -4,6 +4,7 @@ import com.codecool.dungeoncrawl.logic.Cell;
 import com.codecool.dungeoncrawl.logic.CellType;
 import com.codecool.dungeoncrawl.logic.GameMap;
 import com.codecool.dungeoncrawl.logic.MapLoader;
+import com.codecool.dungeoncrawl.logic.actors.Player;
 import com.codecool.dungeoncrawl.logic.dungeonitems.Key;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
@@ -73,7 +74,7 @@ public class Main extends Application {
             @Override
             public void handle(long l) {
                 timeSum[0] = timeSum[0] + l;
-                if (timeSum[0] / 1000000000 > 100000) {
+                if (timeSum[0] / 1000000000 > 1000) {
                     render();
                     update();
                     timeSum[0] = 0;
@@ -86,13 +87,14 @@ public class Main extends Application {
 
     private void update() {
 //        map.getSkeletons().forEach(Skeleton::move);
-        map.getPlayer().pickUp();
 
-
-        map.getPlayer().getInventory().forEach(dungeonItem -> {
-            if (dungeonItem instanceof Key)
-                map.getDoor().setType(CellType.OPENDOOR);
-        });
+        if (map.getPlayer().getCell().getDungeonItem() != null
+                && map.getPlayer().getCell().getDungeonItem().getTileName().equals("key")){
+            map.getDoor().setType(CellType.OPENDOOR);
+            map.getPlayer().getCell().setDungeonItem(null);
+        } else {
+            map.getPlayer().pickUp();
+        }
     }
 
 
