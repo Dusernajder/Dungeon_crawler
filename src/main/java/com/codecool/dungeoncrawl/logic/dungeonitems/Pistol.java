@@ -1,22 +1,25 @@
 package com.codecool.dungeoncrawl.logic.dungeonitems;
 
 import com.codecool.dungeoncrawl.logic.Cell;
+import com.codecool.dungeoncrawl.logic.CellType;
 import com.codecool.dungeoncrawl.logic.actors.Actor;
 
-
-public class Sword extends Weapon {
+public class Pistol extends Weapon {
 
     private final int attackPower;
 
-    public Sword(Cell cell, int attackPower) {
+    public Pistol(Cell cell, int attackPower) {
         super(cell);
         this.attackPower = attackPower;
     }
 
     @Override
     public void weaponAttack(int dx, int dy, Cell cell) {
-        Cell neighbourCell = cell.getNeighbor(dx, dy);
-        Actor actor = neighbourCell.getActor();
+        while (cell.getNeighbor(dx, dy).getActor() == null
+                && cell.getNeighbor(dx, dy).getType() != CellType.WALL) {
+            cell = cell.getNeighbor(dx, dy);
+        }
+        Actor actor = cell.getNeighbor(dx, dy).getActor();
         if (actor != null)
             actor.damage(attackPower);
     }
@@ -27,6 +30,6 @@ public class Sword extends Weapon {
 
     @Override
     public String getTileName() {
-        return "sword";
+        return "pistol";
     }
 }

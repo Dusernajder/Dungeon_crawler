@@ -35,6 +35,12 @@ public abstract class Actor implements Drawable {
         }
     }
 
+    public void damage(int attackPower) {
+        health -= attackPower;
+        if (health <= 0)
+            cell.setActor(null);
+    }
+
 
     private boolean isNeighborWall(Cell cell) {
         return cell.getTileName().equals("wall");
@@ -53,6 +59,9 @@ public abstract class Actor implements Drawable {
         return health;
     }
 
+    public void setHealth(int health) {
+        this.health = health;
+    }
 
     public Cell getCell() {
         return cell;
