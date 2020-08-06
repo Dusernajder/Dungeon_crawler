@@ -14,7 +14,7 @@ public class Player extends Actor {
     private int directionX = 0;
     private int directionY = -1;
 
-    private ArrayList<DungeonItem> inventory = new ArrayList<>();
+    private final ArrayList<DungeonItem> inventory = new ArrayList<>();
 
 
     public Player(Cell cell) {
@@ -45,23 +45,16 @@ public class Player extends Actor {
         }
     }
 
-
     public String getTileName() {
         return "player";
     }
 
-
-    public ArrayList<DungeonItem> getInventory() {
-        return inventory;
-    }
-
-
     public void pickUp() {
         DungeonItem item = getCell().getDungeonItem();
         if (item != null) {
-//            System.out.println(item.getClass().getSuperclass().getSimpleName());
             if (item.getClass().getSuperclass().getSimpleName().equals("Weapon")) {
-                weapon = (Weapon)item;
+                if (weapon == null || ((Weapon) item).getAttackPower() > weapon.getAttackPower())
+                    weapon = (Weapon) item;
             } else {
                 inventory.add(item);
             }
@@ -80,18 +73,9 @@ public class Player extends Actor {
         return inventoryString.toString();
     }
 
-    public DungeonItem getWeapon() {
-        return weapon;
-    }
-
-    public void setWeapon(DungeonItem weapon) {
-        this.weapon = (Weapon)weapon;
-    }
-
-    private void setPosition(int dx, int dy){
+    private void setPosition(int dx, int dy) {
         directionX = dx;
         directionY = dy;
         moveIfPossible(dx, dy);
-//        System.out.println(dx + ", " + dy);
     }
 }

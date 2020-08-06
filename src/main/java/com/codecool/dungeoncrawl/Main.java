@@ -4,8 +4,6 @@ import com.codecool.dungeoncrawl.logic.Cell;
 import com.codecool.dungeoncrawl.logic.CellType;
 import com.codecool.dungeoncrawl.logic.GameMap;
 import com.codecool.dungeoncrawl.logic.MapLoader;
-import com.codecool.dungeoncrawl.logic.actors.Player;
-import com.codecool.dungeoncrawl.logic.dungeonitems.Key;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.geometry.Insets;
@@ -89,7 +87,7 @@ public class Main extends Application {
 //        map.getSkeletons().forEach(Skeleton::move);
 
         if (map.getPlayer().getCell().getDungeonItem() != null
-                && map.getPlayer().getCell().getDungeonItem().getTileName().equals("key")){
+                && map.getPlayer().getCell().getDungeonItem().getTileName().equals("key")) {
             map.getDoor().setType(CellType.OPENDOOR);
             map.getPlayer().getCell().setDungeonItem(null);
         } else {
@@ -106,8 +104,8 @@ public class Main extends Application {
                 Cell cell = map.getCell(x, y);
                 if (cell.getActor() != null) {
                     Tiles.drawTile(context, cell.getActor(), x, y);
-                } else if (cell.getDungeonItem() != null){
-                    Tiles.drawTile(context,cell.getDungeonItem(), x, y);
+                } else if (cell.getDungeonItem() != null) {
+                    Tiles.drawTile(context, cell.getDungeonItem(), x, y);
                 } else {
                     Tiles.drawTile(context, cell, x, y);
                 }
