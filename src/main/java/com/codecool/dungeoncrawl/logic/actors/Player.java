@@ -14,7 +14,6 @@ public class Player extends Actor {
 
     private ArrayList<DungeonItem> inventory = new ArrayList<>();
 
-
     public Player(Cell cell) {
         super(cell);
         level = 1;
@@ -22,6 +21,14 @@ public class Player extends Actor {
         attack = 5;
 
     }
+
+//    static public Player instanceOf() {
+//        if (Player == null) {
+//            return new Player(instanceOf().getCell());
+//        } else {
+//
+//        }
+//    }
 
 
     public void onKeyPressed(KeyEvent keyEvent) {
@@ -51,6 +58,9 @@ public class Player extends Actor {
         return inventory;
     }
 
+    public void setInventory(ArrayList<DungeonItem> inventory) {
+        this.inventory = inventory;
+    }
 
     public void pickUp() {
         DungeonItem item = getCell().getDungeonItem();
@@ -71,5 +81,9 @@ public class Player extends Actor {
 
     public void levelUp() {
         level += 1;
+    }
+
+    public void setCell(Cell cell) {
+        this.cell = cell;
     }
 }
