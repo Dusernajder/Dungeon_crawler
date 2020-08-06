@@ -21,7 +21,7 @@ public class Pistol extends Weapon {
         }
         Actor actor = cell.getNeighbor(dx, dy).getActor();
         if (actor != null)
-            actor.damage(attackPower);
+            actor.takeDamage(attackPower);
     }
 
     public int getAttackPower() {

@@ -35,7 +35,7 @@ public abstract class Actor implements Drawable {
         }
     }
 
-    public void damage(int attackPower) {
+    public void takeDamage(int attackPower) {
         health -= attackPower;
         if (health <= 0)
             cell.setActor(null);

@@ -18,7 +18,7 @@ public class Sword extends Weapon {
         Cell neighbourCell = cell.getNeighbor(dx, dy);
         Actor actor = neighbourCell.getActor();
         if (actor != null)
-            actor.damage(attackPower);
+            actor.takeDamage(attackPower);
     }
 
     public int getAttackPower() {
