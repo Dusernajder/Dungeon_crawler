@@ -12,6 +12,10 @@ import java.util.Scanner;
 public class MapLoader {
 
     public static GameMap loadMap(String text) {
+        return loadMap(text, null);
+    }
+
+    public static GameMap loadMap(String text, Player player) {
         InputStream is = MapLoader.class.getResourceAsStream(text);
         Scanner scanner = new Scanner(is);
         int width = scanner.nextInt();
@@ -26,6 +30,9 @@ public class MapLoader {
                 if (x < line.length()) {
                     Cell cell = map.getCell(x, y);
                     switch (line.charAt(x)) {
+                        case '%':
+                            cell.setType(CellType.WATER);
+                            break;
                         case '!':
                             cell.setType(CellType.DOOR);
                             map.setDoor(cell);
@@ -45,7 +52,8 @@ public class MapLoader {
                             break;
                         case '@':
                             cell.setType(CellType.FLOOR);
-                            map.setPlayer(new Player(cell));
+                            player = getPlayer(player, cell);
+                            map.setPlayer(player);
                             break;
                         case 'k':
                             cell.setType(CellType.FLOOR);
@@ -63,4 +71,14 @@ public class MapLoader {
         }
         return map;
     }
+
+    private static Player getPlayer(Player player, Cell cell) {
+        if (player == null) {
+            player = new Player(cell);
+        } else {
+            player.setCell(cell);
+        }
+        return player;
+    }
+
 }

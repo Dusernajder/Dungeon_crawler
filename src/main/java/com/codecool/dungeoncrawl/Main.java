@@ -4,7 +4,9 @@ import com.codecool.dungeoncrawl.logic.Cell;
 import com.codecool.dungeoncrawl.logic.CellType;
 import com.codecool.dungeoncrawl.logic.GameMap;
 import com.codecool.dungeoncrawl.logic.MapLoader;
+import com.codecool.dungeoncrawl.logic.actors.Player;
 import com.codecool.dungeoncrawl.logic.actors.Skeleton;
+import com.codecool.dungeoncrawl.logic.dungeonitems.DungeonItem;
 import com.codecool.dungeoncrawl.logic.dungeonitems.Key;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
@@ -17,6 +19,8 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+
+import java.util.ArrayList;
 
 
 public class Main extends Application {
@@ -31,7 +35,6 @@ public class Main extends Application {
     // labels
     Label healthLabel = new Label();
     Label inventoryLabel = new Label();
-
 
     public static void main(String[] args) {
         launch(args);
@@ -66,7 +69,6 @@ public class Main extends Application {
         // start game loop
         gameLoop();
     }
-
 
     private void gameLoop() {
         new AnimationTimer() {
@@ -121,16 +123,38 @@ public class Main extends Application {
 
 
     private void update() {
+        Player player = map.getPlayer();
+        String[] maps = {"/map.txt", "/map2.txt", "/map3.txt"};
+        int currentLevel = map.getPlayer().getLevel();
+        if (map.getDoor() == map.getPlayer().getCell()) {
+
+            ArrayList<DungeonItem> inventory = map.getPlayer().getInventory();
+            map.getPlayer().levelUp();
+            getMapByLevel(maps, currentLevel, player);
+            map.getPlayer().setInventory(inventory);
+        }
+
+
         // move skeletons
         map.getSkeletons().forEach(Skeleton::move);
         // check if key has been collected
         map.getPlayer().getInventory().forEach(dungeonItem -> {
             if (dungeonItem instanceof Key)
                 map.getDoor().setType(CellType.OPENDOOR);
+
         });
         // UI
         healthLabel.setText("" + map.getPlayer().getHealth());
         inventoryLabel.setText(map.getPlayer().getStringInventory());
+    }
+
+    private void getMapByLevel(String[] maps, int currentLevel, Player player) {
+        switch (currentLevel) {
+            case 1:
+                map = MapLoader.loadMap(maps[0]);
+            case 2:
+                map = MapLoader.loadMap(maps[1], player);
+        }
     }
 
 

@@ -6,7 +6,8 @@ import com.codecool.dungeoncrawl.logic.Drawable;
 
 public abstract class Actor implements Drawable {
 
-    private Cell cell;
+    protected Cell cell;
+    protected int level;
     protected int health;
     protected int attack;
 
@@ -44,6 +45,9 @@ public abstract class Actor implements Drawable {
         return cell.getTileName().equals("door");
     }
 
+    public int getLevel() {
+        return level;
+    }
 
     public int getHealth() {
         return health;
