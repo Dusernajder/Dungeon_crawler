@@ -4,6 +4,10 @@ import com.codecool.dungeoncrawl.logic.Cell;
 import com.codecool.dungeoncrawl.logic.CellType;
 import com.codecool.dungeoncrawl.logic.GameMap;
 import com.codecool.dungeoncrawl.logic.MapLoader;
+import com.codecool.dungeoncrawl.logic.actors.Player;
+import com.codecool.dungeoncrawl.logic.actors.Skeleton;
+import com.codecool.dungeoncrawl.logic.dungeonitems.DungeonItem;
+import com.codecool.dungeoncrawl.logic.dungeonitems.Key;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.geometry.Insets;
@@ -15,6 +19,8 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+
+import java.util.ArrayList;
 
 
 public class Main extends Application {
@@ -29,7 +35,6 @@ public class Main extends Application {
     // labels
     Label healthLabel = new Label();
     Label inventoryLabel = new Label();
-
 
     public static void main(String[] args) {
         launch(args);
@@ -65,53 +70,123 @@ public class Main extends Application {
         gameLoop();
     }
 
-
     private void gameLoop() {
-        final float[] timeSum = {0};
         new AnimationTimer() {
+            final static float FPS = 5;
+            // times to run update method
+            final float timePerTick = 1e9f / FPS; // 1 sec = 1000000000 (1 billion) nanoSec
+
+            // elapsed time
+            float delta = 0;
+            long now;
+            long lastTime = System.nanoTime();
+
+            // observation purposes
+            long timer = 0;
+            int ticks = 0;
+
+
             @Override
             public void handle(long l) {
-                timeSum[0] = timeSum[0] + l;
-                if (timeSum[0] / 1000000000 > 1000) {
-                    render();
+                now = System.nanoTime(); // current time
+
+                // increment by elapsed time, divide times needed to tick/s
+                delta += (now - lastTime) / timePerTick;
+
+                // observation purposes
+                timer += now - lastTime;
+                lastTime = now;
+
+                if (delta >= 1) {
                     update();
-                    timeSum[0] = 0;
+                    ticks++;
+                    delta--;
                 }
-                // TODO: different time intervals for player movement
+                // prints how many time update has been called
+                if (timer >= 1e9) {
+                    System.out.println("Ticks per Frame: " + ticks);
+                    ticks = 0;
+                    timer = 0;
+                }
+                render();
             }
         }.start();
+
+        // safety net
+        try {
+            stop();
+        }
+        catch (Exception e) {
+            System.err.println("Program can NOT be stopped!");
+        }
     }
 
 
     private void update() {
-//        map.getSkeletons().forEach(Skeleton::move);
+        Player player = map.getPlayer();
+        String[] maps = {"/map.txt", "/map2.txt", "/map3.txt"};
+        int currentLevel = map.getPlayer().getLevel();
+        // if player enter open door
+        if (map.getDoor() == map.getPlayer().getCell()) {
+            ArrayList<DungeonItem> inventory = map.getPlayer().getInventory();
+            // level up
+            map.getPlayer().levelUp();
+            // Set new map
+            getMapByLevel(maps, currentLevel, player);
+            // Set inventory
+            map.getPlayer().setInventory(inventory);
+            // Remove key from inventory
+            removeKey(map.getPlayer().getInventory());
+        }
 
-        if (map.getPlayer().getCell().getDungeonItem() != null
-                && map.getPlayer().getCell().getDungeonItem().getTileName().equals("key")) {
-            map.getDoor().setType(CellType.OPENDOOR);
-            map.getPlayer().getCell().setDungeonItem(null);
-        } else {
-            map.getPlayer().pickUp();
+
+        // move skeletons
+        map.getSkeletons().forEach(Skeleton::move);
+        // check if key has been collected
+        map.getPlayer().getInventory().forEach(dungeonItem -> {
+            if (dungeonItem instanceof Key)
+                map.getDoor().setType(CellType.OPENDOOR);
+
+        });
+        // UI
+        healthLabel.setText("" + map.getPlayer().getHealth());
+        inventoryLabel.setText(map.getPlayer().getStringInventory());
+    }
+
+    private void removeKey(ArrayList<DungeonItem> inventory) {
+        inventory.removeIf(dungeonItem -> dungeonItem.getTileName().equals("key"));
+    }
+
+    private void getMapByLevel(String[] maps, int currentLevel, Player player) {
+        switch (currentLevel) {
+            case 1:
+                map = MapLoader.loadMap(maps[0]);
+            case 2:
+                map = MapLoader.loadMap(maps[1], player);
         }
     }
 
 
     private void render() {
+        // clear canvas
         context.setFill(Color.BLACK);
         context.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
+        //draw map
         for (int x = 0; x < map.getWidth(); x++) {
             for (int y = 0; y < map.getHeight(); y++) {
                 Cell cell = map.getCell(x, y);
                 if (cell.getActor() != null) {
                     Tiles.drawTile(context, cell.getActor(), x, y);
-                } else if (cell.getDungeonItem() != null) {
+                }
+                else if (cell.getDungeonItem() != null) {
                     Tiles.drawTile(context, cell.getDungeonItem(), x, y);
-                } else {
+                }
+                else {
                     Tiles.drawTile(context, cell, x, y);
                 }
             }
+            // pick up items from floor
+            map.getPlayer().pickUp();
         }
-        healthLabel.setText("" + map.getPlayer().getHealth());
-        inventoryLabel.setText(map.getPlayer().getStringInventory());
     }
 }
