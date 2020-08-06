@@ -6,26 +6,21 @@ import com.codecool.dungeoncrawl.logic.actors.Actor;
 
 public class Pistol extends Weapon {
 
-    private final int attackPower = 3;
-
     public Pistol(Cell cell) {
         super(cell);
     }
 
     @Override
     public void weaponAttack(int dx, int dy, Cell cell) {
+        int attackPower = 3;
         while (cell.getNeighbor(dx, dy).getActor() == null
                 && cell.getNeighbor(dx, dy).getType() != CellType.WALL) {
             cell = cell.getNeighbor(dx, dy);
             System.out.println(cell.getX() + ", " + cell.getY() + ", " + cell.getType());
         }
         Actor actor = cell.getNeighbor(dx, dy).getActor();
-        if (actor != null) {
-            actor.setHealth(actor.getHealth() - attackPower);
-            if (actor.getHealth() <= 0){
-                actor.getCell().setActor(null);
-            }
-        }
+        if (actor != null)
+            actor.damage(attackPower);
     }
 
     @Override

@@ -6,8 +6,6 @@ import com.codecool.dungeoncrawl.logic.actors.Actor;
 
 public class Sword extends Weapon {
 
-    private final int attackPower = 2;
-
     public Sword(Cell cell) {
         super(cell);
     }
@@ -16,11 +14,9 @@ public class Sword extends Weapon {
     public void weaponAttack(int dx, int dy, Cell cell) {
         Cell neighbourCell = cell.getNeighbor(dx, dy);
         Actor actor = neighbourCell.getActor();
-        if (actor != null){
-            actor.setHealth(actor.getHealth() - attackPower);
-            if (actor.getHealth() <= 0)
-                neighbourCell.setActor(null);
-        }
+        int attackPower = 2;
+        if (actor != null)
+            actor.damage(attackPower);
     }
 
     @Override
