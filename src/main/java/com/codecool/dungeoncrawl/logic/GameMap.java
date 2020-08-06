@@ -14,6 +14,7 @@ public class GameMap {
 
     private Player player;
     private Cell door;
+    private Cell gate;
 
     private ArrayList<Skeleton> skeletons;
 
@@ -70,8 +71,15 @@ public class GameMap {
         return door;
     }
 
+    public Cell getGate() {
+        return gate;
+    }
 
     public void setDoor(Cell door) {
         this.door = door;
+    }
+
+    public void setGate(Cell gate) {
+        this.gate = gate;
     }
 }

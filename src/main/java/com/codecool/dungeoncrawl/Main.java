@@ -104,7 +104,7 @@ public class Main extends Application {
                 }
                 // prints how many time update has been called
                 if (timer >= 1e9) {
-                    System.out.println("Ticks per Frame: " + ticks);
+//                    System.out.println("Ticks per Frame: " + ticks);
                     ticks = 0;
                     timer = 0;
                 }
@@ -123,23 +123,9 @@ public class Main extends Application {
 
 
     private void update() {
-        Player player = map.getPlayer();
-        String[] maps = {"/map.txt", "/map2.txt", "/map3.txt"};
-        int currentLevel = map.getPlayer().getLevel();
+
         // if player enter open door
-        if (map.getDoor() == map.getPlayer().getCell()) {
-            ArrayList<DungeonItem> inventory = map.getPlayer().getInventory();
-            // level up
-            map.getPlayer().levelUp();
-            // Set new map
-            getMapByLevel(maps, currentLevel, player);
-            // Set inventory
-            map.getPlayer().setInventory(inventory);
-            // Remove key from inventory
-            removeKey(map.getPlayer().getInventory());
-        }
-
-
+        setNextMap(MapLoader.getMaps());
         // move skeletons
         map.getSkeletons().forEach(Skeleton::move);
         // check if key has been collected
@@ -153,19 +139,18 @@ public class Main extends Application {
         inventoryLabel.setText(map.getPlayer().getStringInventory());
     }
 
-    private void removeKey(ArrayList<DungeonItem> inventory) {
-        inventory.removeIf(dungeonItem -> dungeonItem.getTileName().equals("key"));
-    }
-
-    private void getMapByLevel(String[] maps, int currentLevel, Player player) {
-        switch (currentLevel) {
-            case 1:
-                map = MapLoader.loadMap(maps[0]);
-            case 2:
-                map = MapLoader.loadMap(maps[1], player);
+    private void setNextMap(String[] maps) {
+        Player player = map.getPlayer();
+        int currentLevel = map.getPlayer().getLevel();
+        if (map.getDoor() == player.getCell()) {
+            // level up
+            player.levelUp();
+            // Set new map
+            MapLoader.getMapByLevel(currentLevel, player);
+            // Remove key from inventory
+            player.removeKey(player.getInventory());
         }
     }
-
 
     private void render() {
         // clear canvas

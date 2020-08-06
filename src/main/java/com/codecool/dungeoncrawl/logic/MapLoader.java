@@ -10,6 +10,10 @@ import java.util.Scanner;
 
 
 public class MapLoader {
+    // Maps
+    private static String[] maps = {"/map.txt", "/map2.txt", "/map3.txt"};
+
+    GameMap map = MapLoader.getMapByLevel(1, null);
 
     public static GameMap loadMap(String text) {
         return loadMap(text, null);
@@ -30,6 +34,10 @@ public class MapLoader {
                 if (x < line.length()) {
                     Cell cell = map.getCell(x, y);
                     switch (line.charAt(x)) {
+                        case 'g':
+                            cell.setType(CellType.GATE);
+                            map.setGate(cell);
+                            break;
                         case '%':
                             cell.setType(CellType.WATER);
                             break;
@@ -72,6 +80,21 @@ public class MapLoader {
         return map;
     }
 
+    public static String[] getMaps() {
+        return maps;
+    }
+
+    public static GameMap getMapByLevel(int currentLevel, Player player) {
+
+        switch (currentLevel) {
+            case 1:
+                map = MapLoader.loadMap(maps[0]);
+            case 2:
+                map = MapLoader.loadMap(maps[1], player);
+        }
+        return null;
+    }
+
     private static Player getPlayer(Player player, Cell cell) {
         if (player == null) {
             player = new Player(cell);
@@ -80,5 +103,8 @@ public class MapLoader {
         }
         return player;
     }
+
+
+
 
 }

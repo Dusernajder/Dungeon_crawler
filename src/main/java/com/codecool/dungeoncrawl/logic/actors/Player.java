@@ -22,6 +22,31 @@ public class Player extends Actor {
 
     }
 
+    public void setCell(Cell cell) {
+        this.cell = cell;
+    }
+
+    public void setInventory(ArrayList<DungeonItem> inventory) {
+        this.inventory = inventory;
+    }
+
+    public String getStringInventory() {
+        StringBuilder inventoryString = new StringBuilder();
+        for (DungeonItem dungeonItem : inventory) {
+            inventoryString.append("\n").append(dungeonItem.getTileName());
+        }
+        return inventoryString.toString();
+    }
+
+    public String getTileName() {
+        return "player";
+    }
+
+    public ArrayList<DungeonItem> getInventory() {
+        return inventory;
+    }
+
+
     public void onKeyPressed(KeyEvent keyEvent) {
         switch (keyEvent.getCode()) {
             case UP:
@@ -39,20 +64,6 @@ public class Player extends Actor {
         }
     }
 
-
-    public String getTileName() {
-        return "player";
-    }
-
-
-    public ArrayList<DungeonItem> getInventory() {
-        return inventory;
-    }
-
-    public void setInventory(ArrayList<DungeonItem> inventory) {
-        this.inventory = inventory;
-    }
-
     public void pickUp() {
         DungeonItem item = getCell().getDungeonItem();
         if (item != null) {
@@ -61,20 +72,11 @@ public class Player extends Actor {
         }
     }
 
-
-    public String getStringInventory() {
-        StringBuilder inventoryString = new StringBuilder();
-        for (DungeonItem dungeonItem : inventory) {
-            inventoryString.append("\n").append(dungeonItem.getTileName());
-        }
-        return inventoryString.toString();
-    }
-
     public void levelUp() {
         level += 1;
     }
 
-    public void setCell(Cell cell) {
-        this.cell = cell;
+    public void removeKey(ArrayList<DungeonItem> inventory) {
+        inventory.removeIf(dungeonItem -> dungeonItem.getTileName().equals("key"));
     }
 }
