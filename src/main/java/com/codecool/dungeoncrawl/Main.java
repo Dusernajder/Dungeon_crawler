@@ -128,17 +128,12 @@ public class Main extends Application {
         int currentLevel = map.getPlayer().getLevel();
         // if player enter open door
         if (map.getDoor() == map.getPlayer().getCell()) {
-            ArrayList<DungeonItem> inventory = map.getPlayer().getInventory();
-            // level up
             map.getPlayer().levelUp();
             // Set new map
             getMapByLevel(maps, currentLevel, player);
-            // Set inventory
-            map.getPlayer().setInventory(inventory);
             // Remove key from inventory
             removeKey(map.getPlayer().getInventory());
         }
-
 
         // move skeletons
         map.getSkeletons().forEach(Skeleton::move);

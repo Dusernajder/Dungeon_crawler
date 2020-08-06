@@ -1,13 +1,10 @@
 package com.codecool.dungeoncrawl.logic.actors;
 
 import com.codecool.dungeoncrawl.logic.Cell;
-import com.codecool.dungeoncrawl.logic.GameMap;
-import com.codecool.dungeoncrawl.logic.MapLoader;
 import com.codecool.dungeoncrawl.logic.dungeonitems.DungeonItem;
 import com.codecool.dungeoncrawl.logic.dungeonitems.Weapon;
 import javafx.scene.input.KeyEvent;
 
-import java.io.FileInputStream;
 import java.util.ArrayList;
 
 
@@ -17,7 +14,8 @@ public class Player extends Actor {
     private int directionX = 0;
     private int directionY = -1;
 
-    private final ArrayList<DungeonItem> inventory = new ArrayList<>();
+    private ArrayList<DungeonItem> inventory = new ArrayList<>();
+
 
     public Player(Cell cell) {
         super(cell);
@@ -26,6 +24,7 @@ public class Player extends Actor {
         attack = 5;
 
     }
+
 
     public void onKeyPressed(KeyEvent keyEvent) {
         switch (keyEvent.getCode()) {
@@ -48,25 +47,25 @@ public class Player extends Actor {
         }
     }
 
+
     public String getTileName() {
         return "player";
     }
+
 
     public ArrayList<DungeonItem> getInventory() {
         return inventory;
     }
 
-    public void setInventory(ArrayList<DungeonItem> inventory) {
-        this.inventory = inventory;
-    }
-  
+
     public void pickUp() {
         DungeonItem item = getCell().getDungeonItem();
         if (item != null) {
             if (item.getClass().getSuperclass().getSimpleName().equals("Weapon")) {
                 if (weapon == null || ((Weapon) item).getAttackPower() > weapon.getAttackPower())
                     weapon = (Weapon) item;
-            } else {
+            }
+            else {
                 inventory.add(item);
             }
             getCell().setDungeonItem(null);
@@ -84,16 +83,22 @@ public class Player extends Actor {
         return inventoryString.toString();
     }
 
-    private void setPosition(int dx, int dy) {
-        directionX = dx;
-        directionY = dy;
-        moveIfPossible(dx, dy);
-      
+
     public void levelUp() {
         level += 1;
     }
 
+
     public void setCell(Cell cell) {
         this.cell = cell;
     }
+
+
+    private void setPosition(int dx, int dy) {
+        directionX = dx;
+        directionY = dy;
+        moveIfPossible(dx, dy);
+
+    }
 }
+
