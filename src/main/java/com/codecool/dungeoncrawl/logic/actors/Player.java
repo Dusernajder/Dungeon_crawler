@@ -22,15 +22,6 @@ public class Player extends Actor {
 
     }
 
-//    static public Player instanceOf() {
-//        if (Player == null) {
-//            return new Player(instanceOf().getCell());
-//        } else {
-//
-//        }
-//    }
-
-
     public void onKeyPressed(KeyEvent keyEvent) {
         switch (keyEvent.getCode()) {
             case UP:
