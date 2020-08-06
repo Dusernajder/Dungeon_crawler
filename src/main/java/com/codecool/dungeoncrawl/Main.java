@@ -32,7 +32,6 @@ public class Main extends Application {
     Label healthLabel = new Label();
     Label inventoryLabel = new Label();
 
-
     public static void main(String[] args) {
         launch(args);
     }
@@ -66,7 +65,6 @@ public class Main extends Application {
         // start game loop
         gameLoop();
     }
-
 
     private void gameLoop() {
         new AnimationTimer() {
@@ -103,12 +101,26 @@ public class Main extends Application {
 
 
     private void update() {
+        String[] maps = {"/map.txt", "/map2.txt", "/map3.txt"};
+        int currentLevel = map.getPlayer().getLevel();
+        if (map.getDoor() == map.getPlayer().getCell()) {
+            map.getPlayer().levelUp();
+            switch (currentLevel) {
+                case 1:
+                    map = MapLoader.loadMap(maps[0]);
+                case 2:
+                    map = MapLoader.loadMap(maps[1]);
+            }
+        }
+
+
         // move skeletons
         map.getSkeletons().forEach(Skeleton::move);
         // check if key has been collected
         map.getPlayer().getInventory().forEach(dungeonItem -> {
             if (dungeonItem instanceof Key)
                 map.getDoor().setType(CellType.OPENDOOR);
+
         });
         // UI
         healthLabel.setText("" + map.getPlayer().getHealth());

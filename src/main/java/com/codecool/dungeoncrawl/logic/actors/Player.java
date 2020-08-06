@@ -1,9 +1,12 @@
 package com.codecool.dungeoncrawl.logic.actors;
 
 import com.codecool.dungeoncrawl.logic.Cell;
+import com.codecool.dungeoncrawl.logic.GameMap;
+import com.codecool.dungeoncrawl.logic.MapLoader;
 import com.codecool.dungeoncrawl.logic.dungeonitems.DungeonItem;
 import javafx.scene.input.KeyEvent;
 
+import java.io.FileInputStream;
 import java.util.ArrayList;
 
 
@@ -14,8 +17,10 @@ public class Player extends Actor {
 
     public Player(Cell cell) {
         super(cell);
+        level = 1;
         health = 10;
         attack = 5;
+
     }
 
 
@@ -62,5 +67,9 @@ public class Player extends Actor {
             inventoryString.append("\n").append(dungeonItem.getTileName());
         }
         return inventoryString.toString();
+    }
+
+    public void levelUp() {
+        level += 1;
     }
 }
