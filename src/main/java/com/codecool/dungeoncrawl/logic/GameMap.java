@@ -8,6 +8,8 @@ import java.util.ArrayList;
 
 public class GameMap {
 
+    String[] maps = {"/map.txt", "/map2.txt", "/map3.txt"};
+
     private final int width;
     private final int height;
     private final Cell[][] cells;
@@ -28,6 +30,12 @@ public class GameMap {
             }
         }
         skeletons = new ArrayList<>();
+    }
+
+
+    // Todo: Refactor this thingy here
+    public GameMap getMapByLevel(int level) {
+        return MapLoader.loadMap(maps[level]);
     }
 
 

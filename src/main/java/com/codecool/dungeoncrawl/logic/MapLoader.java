@@ -10,11 +10,14 @@ import java.io.InputStream;
 import java.util.Scanner;
 
 
+// Maybe a Singleton could work?!
 public class MapLoader {
+
 
     public static GameMap loadMap(String text) {
         return loadMap(text, null);
     }
+
 
     public static GameMap loadMap(String text, Player player) {
         InputStream is = MapLoader.class.getResourceAsStream(text);
@@ -77,13 +80,15 @@ public class MapLoader {
         return map;
     }
 
+
+    // Todo: Refactor, there are already too much "getPlayer" method exists
     private static Player getPlayer(Player player, Cell cell) {
         if (player == null) {
             player = new Player(cell);
-        } else {
+        }
+        else {
             player.setCell(cell);
         }
         return player;
     }
-
 }

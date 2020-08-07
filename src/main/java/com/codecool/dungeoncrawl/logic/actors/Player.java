@@ -48,16 +48,6 @@ public class Player extends Actor {
     }
 
 
-    public String getTileName() {
-        return "player";
-    }
-
-
-    public ArrayList<DungeonItem> getInventory() {
-        return inventory;
-    }
-
-
     public void pickUp() {
         DungeonItem item = getCell().getDungeonItem();
         if (item != null) {
@@ -84,8 +74,24 @@ public class Player extends Actor {
     }
 
 
-    public void levelUp() {
-        level += 1;
+    public void updatePlayer() {
+        level++;
+        removeKey();
+    }
+
+
+    private void removeKey() {
+        inventory.removeIf(dungeonItem -> dungeonItem.getTileName().equals("key"));
+    }
+
+
+    public String getTileName() {
+        return "player";
+    }
+
+
+    public ArrayList<DungeonItem> getInventory() {
+        return inventory;
     }
 
 
@@ -98,7 +104,7 @@ public class Player extends Actor {
         directionX = dx;
         directionY = dy;
         moveIfPossible(dx, dy);
-
     }
+
 }
 
