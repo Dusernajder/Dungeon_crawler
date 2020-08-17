@@ -70,7 +70,7 @@ public class Main extends Application {
 
     private void gameLoop() {
         new AnimationTimer() {
-            final static float FPS = 5;
+            final static float FPS = 1;
             // times to run update method
             final float timePerTick = 1e9f / FPS; // 1 sec = 1000000000 (1 billion) nanoSec
 

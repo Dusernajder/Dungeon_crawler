@@ -13,12 +13,6 @@ import java.util.Scanner;
 // Maybe a Singleton could work?!
 public class MapLoader {
 
-
-    public static GameMap loadMap(String text) {
-        return loadMap(text, null);
-    }
-
-
     public static GameMap loadMap(String text, Player player) {
         InputStream is = MapLoader.class.getResourceAsStream(text);
         Scanner scanner = new Scanner(is);
@@ -92,4 +86,5 @@ public class MapLoader {
         }
         return player;
     }
+
 }
