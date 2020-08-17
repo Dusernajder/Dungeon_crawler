@@ -77,11 +77,9 @@ public class MapLoader {
 
     // Todo: Refactor, there are already too much "getPlayer" method exists
     private static Player getPlayer(Player player, Cell cell) {
-        System.out.println("get player");
         if (player == null) {
             player = new Player(cell);
-        }
-        else {
+        } else {
             player.setCell(cell);
         }
         return player;

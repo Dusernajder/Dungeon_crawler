@@ -102,7 +102,7 @@ public class Main extends Application {
                 }
                 // prints how many time update has been called
                 if (timer >= 1e9) {
-                    System.out.println("Ticks per Frame: " + ticks);
+//                    System.out.println("Ticks per Frame: " + ticks);
                     ticks = 0;
                     timer = 0;
                 }
@@ -113,8 +113,7 @@ public class Main extends Application {
         // safety net
         try {
             stop();
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             System.err.println("Program can NOT be stopped!");
         }
     }
@@ -150,11 +149,9 @@ public class Main extends Application {
                 Cell cell = map.getCell(x, y);
                 if (cell.getActor() != null) {
                     Tiles.drawTile(context, cell.getActor(), x, y);
-                }
-                else if (cell.getDungeonItem() != null) {
+                } else if (cell.getDungeonItem() != null) {
                     Tiles.drawTile(context, cell.getDungeonItem(), x, y);
-                }
-                else {
+                } else {
                     Tiles.drawTile(context, cell, x, y);
                 }
             }

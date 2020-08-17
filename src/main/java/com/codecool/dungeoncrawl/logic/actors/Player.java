@@ -52,8 +52,7 @@ public class Player extends Actor {
             if (item instanceof Weapon) {
                 if (weapon == null || ((Weapon) item).getAttackPower() > weapon.getAttackPower())
                     weapon = (Weapon) item;
-            }
-            else {
+            } else {
                 inventory.add(item);
             }
             getCell().setDungeonItem(null);
