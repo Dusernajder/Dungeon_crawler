@@ -10,6 +10,8 @@ public abstract class Actor implements Drawable {
     protected int level;
     protected int health;
     protected int attack;
+    protected int directionX = 0;
+    protected int directionY = 0;
 
 
     public Actor(Cell cell) {
@@ -33,7 +35,15 @@ public abstract class Actor implements Drawable {
                 neighbourCell.getActor() != null)) {
             move(dx, dy);
         }
+        setDirectionFacing(dx, dy);
     }
+
+
+    private void setDirectionFacing(int dx, int dy) {
+        directionX = dx;
+        directionY = dy;
+    }
+
 
     public void takeDamage(int attackPower) {
         health -= attackPower;
@@ -51,17 +61,21 @@ public abstract class Actor implements Drawable {
         return cell.getTileName().equals("door");
     }
 
+
     public int getLevel() {
         return level;
     }
+
 
     public int getHealth() {
         return health;
     }
 
+
     public void setHealth(int health) {
         this.health = health;
     }
+
 
     public Cell getCell() {
         return cell;

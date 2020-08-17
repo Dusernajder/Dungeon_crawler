@@ -11,8 +11,6 @@ import java.util.ArrayList;
 public class Player extends Actor {
 
     private Weapon weapon;
-    private int directionX = 0;
-    private int directionY = -1;
 
     private ArrayList<DungeonItem> inventory = new ArrayList<>();
 
@@ -29,16 +27,16 @@ public class Player extends Actor {
     public void onKeyPressed(KeyEvent keyEvent) {
         switch (keyEvent.getCode()) {
             case UP:
-                setPosition(0, -1);
+                moveIfPossible(0, -1);
                 break;
             case DOWN:
-                setPosition(0, 1);
+                moveIfPossible(0, 1);
                 break;
             case LEFT:
-                setPosition(-1, 0);
+                moveIfPossible(-1, 0);
                 break;
             case RIGHT:
-                setPosition(1, 0);
+                moveIfPossible(1, 0);
                 break;
             case SPACE:
                 if (weapon != null)
@@ -51,7 +49,7 @@ public class Player extends Actor {
     public void pickUp() {
         DungeonItem item = getCell().getDungeonItem();
         if (item != null) {
-            if (item.getClass().getSuperclass().getSimpleName().equals("Weapon")) {
+            if (item instanceof Weapon) {
                 if (weapon == null || ((Weapon) item).getAttackPower() > weapon.getAttackPower())
                     weapon = (Weapon) item;
             }
@@ -98,13 +96,5 @@ public class Player extends Actor {
     public void setCell(Cell cell) {
         this.cell = cell;
     }
-
-
-    private void setPosition(int dx, int dy) {
-        directionX = dx;
-        directionY = dy;
-        moveIfPossible(dx, dy);
-    }
-
 }
 

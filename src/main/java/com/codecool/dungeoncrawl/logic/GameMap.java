@@ -33,7 +33,6 @@ public class GameMap {
     }
 
 
-    // Todo: Refactor this thingy here
     public GameMap getMapByLevel(int level) {
         return MapLoader.loadMap(maps[level]);
     }
