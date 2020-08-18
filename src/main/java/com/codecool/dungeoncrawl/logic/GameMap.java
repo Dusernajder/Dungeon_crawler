@@ -17,7 +17,7 @@ public class GameMap {
     private Player player;
     private Cell door;
 
-    private ArrayList<Skeleton> skeletons;
+    private final ArrayList<Skeleton> skeletons;
 
 
     public GameMap(int width, int height, CellType defaultCellType) {

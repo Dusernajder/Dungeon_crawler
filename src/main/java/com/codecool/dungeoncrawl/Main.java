@@ -23,7 +23,7 @@ public class Main extends Application {
 
     // load map
     GameMap map = MapLoader.loadMap("/map.txt");
-    private static BorderPane borderPane = new BorderPane();
+    private static final BorderPane borderPane = new BorderPane();
 
     Canvas canvas = new Canvas(
             map.getWidth() * Tiles.TILE_WIDTH,
@@ -54,7 +54,6 @@ public class Main extends Application {
         ui.add(inventoryLabel, 0, 2);
 
         //create border pane
-//        BorderPane borderPane = new BorderPane();
         borderPane.setCenter(canvas);
         borderPane.setRight(ui);
 

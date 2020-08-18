@@ -30,14 +30,11 @@ public class Pistol extends Weapon {
             steps++;
         }
         Actor actor = cell.getNeighbor(dx, dy).getActor();
-        if (actor != null)
-            actor.takeDamage(attackPower);
-//        System.out.println(cell.getX());
-
-        shootAnimation(dx, dy, playerCell, steps);
+        shootAnimation(dx, dy, playerCell, steps, actor);
     }
 
-    private void shootAnimation(int dx, int dy, Cell playerCell, int steps) {
+    private void shootAnimation(int dx, int dy, Cell playerCell, int steps, Actor actor) {
+        double speed = 0.3;
         Circle circle = new Circle();
         circle.setFill(Color.ORANGERED);
         circle.setRadius(5);
@@ -46,13 +43,15 @@ public class Pistol extends Weapon {
         Main.getPane().getChildren().add(circle);
 
         TranslateTransition transition = new TranslateTransition();
-        transition.setDuration(Duration.seconds(0.07));
+        transition.setDuration(Duration.seconds(speed));
         transition.setToX(dx * (steps * Tiles.TILE_WIDTH));
         transition.setToY(dy * (steps * Tiles.TILE_WIDTH));
         transition.setNode(circle);
         transition.play();
         transition.setOnFinished(actionEvent -> {
             Main.getPane().getChildren().removeAll(circle);
+            if (actor != null)
+                actor.takeDamage(attackPower);
         });
     }
 

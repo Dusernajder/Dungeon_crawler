@@ -2,7 +2,7 @@ package com.codecool.dungeoncrawl.logic;
 
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class CellTest {
     GameMap map = new GameMap(3, 3, CellType.FLOOR);

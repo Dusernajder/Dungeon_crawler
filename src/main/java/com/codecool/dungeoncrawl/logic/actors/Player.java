@@ -14,7 +14,7 @@ public class Player extends Actor {
     private int directionX = 0;
     private int directionY = -1;
 
-    private ArrayList<DungeonItem> inventory = new ArrayList<>();
+    private final ArrayList<DungeonItem> inventory = new ArrayList<>();
 
 
     public Player(Cell cell) {
@@ -54,8 +54,7 @@ public class Player extends Actor {
             if (item.getClass().getSuperclass().getSimpleName().equals("Weapon")) {
                 if (weapon == null || ((Weapon) item).getAttackPower() > weapon.getAttackPower())
                     weapon = (Weapon) item;
-            }
-            else {
+            } else {
                 inventory.add(item);
             }
             getCell().setDungeonItem(null);
