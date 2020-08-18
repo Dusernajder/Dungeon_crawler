@@ -29,18 +29,13 @@ public abstract class Actor implements Drawable {
 
 
     public void moveIfPossible(int dx, int dy) {
-        try {
-            Cell neighbourCell = cell.getNeighbor(dx, dy);
-            if (!(isNeighborWall(neighbourCell) ||
-                    isNeighborClosedDoor(neighbourCell) ||
-                    neighbourCell.getActor() != null)) {
-                move(dx, dy);
-            }
-            setDirectionFacing(dx, dy);
-        } catch (ArrayIndexOutOfBoundsException e) {
-
+        Cell neighbourCell = cell.getNeighbor(dx, dy);
+        if (!(isNeighborWall(neighbourCell) ||
+                isNeighborClosedDoor(neighbourCell) ||
+                neighbourCell.getActor() != null)) {
+            move(dx, dy);
         }
-
+        setDirectionFacing(dx, dy);
     }
 
 

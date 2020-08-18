@@ -34,6 +34,7 @@ public class GameMap {
 
 
     public GameMap getMapByLevel(int level) {
+        System.out.println(maps[level]);
         return MapLoader.loadMap(maps[level], player);
     }
 

@@ -130,7 +130,7 @@ public class Main extends Application {
         });
         // load next map if player stands on open door
         if (map.getDoor() == map.getPlayer().getCell()) {
-            map = map.getMapByLevel(1);
+            map = map.getMapByLevel(map.getPlayer().getLevel());
             map.getPlayer().updatePlayer();
         }
         // UI
