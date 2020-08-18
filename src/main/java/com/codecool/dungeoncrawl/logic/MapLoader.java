@@ -85,8 +85,7 @@ public class MapLoader {
     private static Player getPlayer(Player player, Cell cell) {
         if (player == null) {
             player = new Player(cell);
-        }
-        else {
+        } else {
             player.setCell(cell);
         }
         return player;

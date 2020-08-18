@@ -23,6 +23,8 @@ public class Main extends Application {
 
     // load map
     GameMap map = MapLoader.loadMap("/map.txt");
+    private static final BorderPane borderPane = new BorderPane();
+
     Canvas canvas = new Canvas(
             map.getWidth() * Tiles.TILE_WIDTH,
             map.getHeight() * Tiles.TILE_WIDTH);
@@ -52,9 +54,9 @@ public class Main extends Application {
         ui.add(inventoryLabel, 0, 2);
 
         //create border pane
-        BorderPane borderPane = new BorderPane();
         borderPane.setCenter(canvas);
         borderPane.setRight(ui);
+
 
         // create scene
         Scene scene = new Scene(borderPane);
@@ -65,6 +67,10 @@ public class Main extends Application {
 
         // start game loop
         gameLoop();
+    }
+
+    public static BorderPane getPane() {
+        return borderPane;
     }
 
 
@@ -113,14 +119,14 @@ public class Main extends Application {
         // safety net
         try {
             stop();
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             System.err.println("Program can NOT be stopped!");
         }
     }
 
 
     private void update() {
+        map.checkSkeletons();
         // move skeletons
         map.getSkeletons().forEach(Skeleton::move);
         // check if key has been collected
@@ -150,11 +156,9 @@ public class Main extends Application {
                 Cell cell = map.getCell(x, y);
                 if (cell.getActor() != null) {
                     Tiles.drawTile(context, cell.getActor(), x, y);
-                }
-                else if (cell.getDungeonItem() != null) {
+                } else if (cell.getDungeonItem() != null) {
                     Tiles.drawTile(context, cell.getDungeonItem(), x, y);
-                }
-                else {
+                } else {
                     Tiles.drawTile(context, cell, x, y);
                 }
             }

@@ -17,7 +17,7 @@ public class GameMap {
     private Player player;
     private Cell door;
 
-    private ArrayList<Skeleton> skeletons;
+    private final ArrayList<Skeleton> skeletons;
 
 
     public GameMap(int width, int height, CellType defaultCellType) {
@@ -36,6 +36,10 @@ public class GameMap {
     // Todo: Refactor this thingy here
     public GameMap getMapByLevel(int level) {
         return MapLoader.loadMap(maps[level]);
+    }
+
+    public void checkSkeletons() {
+        skeletons.removeIf(skeleton -> skeleton.getHealth() <= 0);
     }
 
 
