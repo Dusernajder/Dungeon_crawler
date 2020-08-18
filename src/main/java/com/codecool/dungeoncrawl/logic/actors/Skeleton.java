@@ -2,6 +2,7 @@ package com.codecool.dungeoncrawl.logic.actors;
 
 import com.codecool.dungeoncrawl.Util;
 import com.codecool.dungeoncrawl.logic.Cell;
+import com.codecool.dungeoncrawl.logic.CellType;
 
 
 public class Skeleton extends Actor {
@@ -16,6 +17,15 @@ public class Skeleton extends Actor {
     @Override
     public String getTileName() {
         return "skeleton";
+    }
+
+    @Override
+    public void takeDamage(int attackPower) {
+        health -= attackPower;
+        if (health <= 0) {
+            cell.setActor(null);
+            cell.setType(CellType.BONE);
+        }
     }
 
 

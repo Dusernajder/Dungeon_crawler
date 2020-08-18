@@ -126,6 +126,7 @@ public class Main extends Application {
 
 
     private void update() {
+        map.checkSkeletons();
         // move skeletons
         map.getSkeletons().forEach(Skeleton::move);
         // check if key has been collected

@@ -38,6 +38,10 @@ public class GameMap {
         return MapLoader.loadMap(maps[level]);
     }
 
+    public void checkSkeletons() {
+        skeletons.removeIf(skeleton -> skeleton.getHealth() <= 0);
+    }
+
 
     public void addSkeleton(Skeleton skeleton) {
         skeletons.add(skeleton);
