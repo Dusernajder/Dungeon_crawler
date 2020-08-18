@@ -1,6 +1,7 @@
 package com.codecool.dungeoncrawl.logic.actors;
 
 import com.codecool.dungeoncrawl.logic.Cell;
+import com.codecool.dungeoncrawl.logic.CellType;
 import com.codecool.dungeoncrawl.logic.Drawable;
 
 
@@ -37,8 +38,10 @@ public abstract class Actor implements Drawable {
 
     public void takeDamage(int attackPower) {
         health -= attackPower;
-        if (health <= 0)
+        if (health <= 0) {
             cell.setActor(null);
+            cell.setType(CellType.BONE);
+        }
     }
 
 
